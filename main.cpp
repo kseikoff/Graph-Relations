@@ -69,7 +69,8 @@ int main() {
         vector<int> reversed_path;
         reversed_path.push_back(paths_container.at(i).at(1));
         reversed_path.push_back(paths_container.at(i).at(0));
-        if (find(paths_container.begin(), paths_container.end(), reversed_path) != paths_container.end()) {
+        if (find(paths_container.begin(), paths_container.end(),
+                 reversed_path) != paths_container.end()) {
             symmetric.at(i) = 1;
         }
         destroy(reversed_path.begin(), reversed_path.end());
