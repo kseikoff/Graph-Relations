@@ -83,6 +83,7 @@ int main() {
                         if (paths_container.at(j).at(0) != paths_container.at(j).at(1)
                             && (paths_container.at(i).at(0) != paths_container.at(j).at(1))) {
                             vector<int> transitivity_path;
+                            transitivity_path.reserve(2);
                             transitivity_path.push_back(paths_container.at(i).at(0));
                             transitivity_path.push_back(paths_container.at(j).at(1));
                             __gnu_cxx::__normal_iterator<vector<int> *,
