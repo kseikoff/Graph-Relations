@@ -1,3 +1,0 @@
-C:/Users/thele/CLionProjects/Graph-relations/cmake-build-debug/CMakeFiles/Graph_relations.dir
-C:/Users/thele/CLionProjects/Graph-relations/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/thele/CLionProjects/Graph-relations/cmake-build-debug/CMakeFiles/rebuild_cache.dir
