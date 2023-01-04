@@ -22,6 +22,8 @@ int main() {
 
     int edge_vertex_container[2];
     bool deuce_presence = false;
+    int count_zeroes_for_symmetric;
+    int count_zeroes_for_reflexivity;
 
     string edge_vertex_values;
     getline(cin, edge_vertex_values);
@@ -46,17 +48,9 @@ int main() {
         paths_container.push_back(split_path_values);
     }
 
-    vector<int> symmetric;
-    symmetric.reserve(edge_vertex_container[0]);
-    for (int i = 0; i < edge_vertex_container[0]; i++) {
-        symmetric.push_back(0);
-    }
+    count_zeroes_for_symmetric = edge_vertex_container[0];
 
-    vector<int> reflexivity;
-    reflexivity.reserve(edge_vertex_container[1]);
-    for (int i = 0; i < edge_vertex_container[1]; i++) {
-        reflexivity.push_back(0);
-    }
+    count_zeroes_for_reflexivity = edge_vertex_container[1];
 
     vector<int> transitivity;
     transitivity.reserve(edge_vertex_container[0]);
@@ -66,7 +60,7 @@ int main() {
 
     for (int i = 0; i < paths_container.size(); i++) {
         if (paths_container.at(i).at(0) == paths_container.at(i).at(1)) {
-            reflexivity.at(paths_container.at(i).at(0) - 1) = 1;
+            count_zeroes_for_reflexivity -= 1;
         }
         vector<int> reversed_path;
         reversed_path.reserve(2);
@@ -74,7 +68,7 @@ int main() {
         reversed_path.push_back(paths_container.at(i).at(0));
         if (find(paths_container.begin(), paths_container.end(),
                  reversed_path) != paths_container.end()) {
-            symmetric.at(i) = 1;
+            count_zeroes_for_symmetric -= 1;
         }
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
             for (int j = 0; j < paths_container.size(); j++) {
@@ -152,6 +146,20 @@ int main() {
             }
         }
     }
+    if (count_zeroes_for_symmetric == 0) {
+        cout << "Симметричный" << endl;
+    } else if (count_zeroes_for_symmetric == edge_vertex_container[0]) {
+        cout << "Антисимметричный" << endl;
+    } else {
+        cout << "Несимметричный" << endl;
+    }
+    if (count_zeroes_for_reflexivity == 0) {
+        cout << "Рефлексивный" << endl;
+    } else if (count_zeroes_for_reflexivity == edge_vertex_container[1]) {
+        cout << "Антирефлексивный" << endl;
+    } else {
+        cout << "Нерефлексивный" << endl;
+    }
     if (deuce_presence || ((find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) &&
          find(transitivity.begin(), transitivity.end(), -1) != transitivity.end())) {
         cout << "Нетранзитивный" << endl;
@@ -163,20 +171,6 @@ int main() {
         cout << "Антитранзитивный" << endl;
     } else {
         cout << "Транзитивный/Антитранзитивный/Нетранзитивный" << endl;
-    }
-    if (find(symmetric.begin(), symmetric.end(), 0) == symmetric.end()) {
-        cout << "Симметричный" << endl;
-    } else if (find(symmetric.begin(), symmetric.end(), 1) != symmetric.end()) {
-        cout << "Несимметричный" << endl;
-    } else {
-        cout << "Антисимметричный" << endl;
-    }
-    if (find(reflexivity.begin(), reflexivity.end(), 0) == reflexivity.end()) {
-        cout << "Рефлексивный" << endl;
-    } else if (find(reflexivity.begin(), reflexivity.end(), 1) != reflexivity.end()) {
-        cout << "Нерефлексивный" << endl;
-    } else {
-        cout << "Антирефлексивный" << endl;
     }
     return 0;
 }
