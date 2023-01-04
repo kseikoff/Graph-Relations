@@ -21,6 +21,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
 
     int edge_vertex_container[2];
+    bool deuce_presence = false;
 
     string edge_vertex_values;
     getline(cin, edge_vertex_values);
@@ -83,10 +84,14 @@ int main() {
                             vector<int> transitivity_path;
                             transitivity_path.push_back(paths_container.at(i).at(0));
                             transitivity_path.push_back(paths_container.at(j).at(1));
-                            if (find(paths_container.begin(), paths_container.end(),
-                                     transitivity_path) != paths_container.end()) {
+                            __gnu_cxx::__normal_iterator<vector<int> *,
+                                    vector<vector<int>>> path_presence = find(paths_container.begin(),
+                                                                          paths_container.end(),
+                                                                          transitivity_path);
+                            if (path_presence != paths_container.end()) {
                                 if (transitivity.at(i) == -1) {
                                     transitivity.at(i) = 2;
+                                    deuce_presence = true;
                                 } else {
                                     if (transitivity.at(i) != 2) {
                                         transitivity.at(i) = 1;
@@ -94,17 +99,16 @@ int main() {
                                 }
                                 if (transitivity.at(j) == -1) {
                                     transitivity.at(j) = 2;
+                                    deuce_presence = true;
                                 } else {
                                     if (transitivity.at(j) != 2) {
                                         transitivity.at(j) = 1;
                                     }
                                 }
-                                int index_of_transitivity_path = distance(paths_container.begin(),
-                                                                          find(paths_container.begin(),
-                                                                               paths_container.end(),
-                                                                               transitivity_path));
+                                int index_of_transitivity_path = distance(paths_container.begin(),path_presence);
                                 if (transitivity.at(index_of_transitivity_path) == -1) {
                                     transitivity.at(index_of_transitivity_path) = 2;
+                                    deuce_presence = true;
                                 } else {
                                     if (transitivity.at(index_of_transitivity_path) != 2) {
                                         transitivity.at(index_of_transitivity_path) = 1;
@@ -118,6 +122,7 @@ int main() {
                                 if (transitivity.at(i) != 2) {
                                     if (transitivity.at(i) != 0 && transitivity.at(i) != -1) {
                                         transitivity.at(i) = 2;
+                                        deuce_presence = true;
                                     } else if (transitivity.at(i) != -1) {
                                         transitivity.at(i) = -1;
                                     }
@@ -125,6 +130,7 @@ int main() {
                                 if (transitivity.at(j) != 2) {
                                     if (transitivity.at(j) != 0 && transitivity.at(j) != -1) {
                                         transitivity.at(j) = 2;
+                                        deuce_presence = true;
                                     } else if (transitivity.at(j) != -1) {
                                         transitivity.at(j) = -1;
                                     }
@@ -145,8 +151,7 @@ int main() {
             }
         }
     }
-    if ((find(transitivity.begin(), transitivity.end(), 2) != transitivity.end()) ||
-        ((find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) &&
+    if (deuce_presence || ((find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) &&
          find(transitivity.begin(), transitivity.end(), -1) != transitivity.end())) {
         cout << "Нетранзитивный" << endl;
     } else if (find(transitivity.begin(), transitivity.end(), -1) == transitivity.end() &&
