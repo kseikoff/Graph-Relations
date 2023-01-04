@@ -25,11 +25,11 @@ int main() {
 
     string edge_vertex_values;
     getline(cin, edge_vertex_values);
-    vector<int> temp = split(edge_vertex_values, ' ');
+    vector<int> split_edge_vertex_values = split(edge_vertex_values, ' ');
     for (int i = 0; i < 2; i++) {
-        edge_vertex_container[i] = temp.at(i);
+        edge_vertex_container[i] = split_edge_vertex_values.at(i);
     }
-    temp.clear();
+    split_edge_vertex_values.clear();
     if (edge_vertex_container[0] == 0 && edge_vertex_container[1] == 0) {
         cout << "Для пустого графа выполняются все отношения" << endl;
         return 0;
@@ -43,9 +43,9 @@ int main() {
     for (int i = 0; i < edge_vertex_container[0]; i++) {
         string path_values;
         getline(cin, path_values);
-        vector<int> temp2 = split(path_values, ' ');
-        paths_container.push_back(temp2);
-        temp2.clear();
+        vector<int> split_path_values = split(path_values, ' ');
+        paths_container.push_back(split_path_values);
+        split_path_values.clear();
     }
 
     vector<int> symmetric;
@@ -105,7 +105,7 @@ int main() {
                                         transitivity.at(j) = 1;
                                     }
                                 }
-                                int index_of_transitivity_path = distance(paths_container.begin(),path_presence);
+                                int index_of_transitivity_path = distance(paths_container.begin(), path_presence);
                                 if (transitivity.at(index_of_transitivity_path) == -1) {
                                     transitivity.at(index_of_transitivity_path) = 2;
                                     deuce_presence = true;
