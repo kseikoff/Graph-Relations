@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 #include <windows.h>
 
 using namespace std;
@@ -18,6 +19,7 @@ vector<int> split(const string& str, char delimiter) {
 }
 
 int main() {
+    int start_time = clock();
     SetConsoleOutputCP(CP_UTF8);
 
     int edge_vertex_container[2];
@@ -26,10 +28,8 @@ int main() {
     string edge_vertex_values;
     getline(cin, edge_vertex_values);
     vector<int> split_edge_vertex_values = split(edge_vertex_values, ' ');
-    for (int i = 0; i < 2; i++) {
-        edge_vertex_container[i] = split_edge_vertex_values.at(i);
-    }
-    split_edge_vertex_values.clear();
+    edge_vertex_container[0] = split_edge_vertex_values.at(0);
+    edge_vertex_container[1] = split_edge_vertex_values.at(1);
     if (edge_vertex_container[0] == 0 && edge_vertex_container[1] == 0) {
         cout << "Для пустого графа выполняются все отношения" << endl;
         return 0;
@@ -39,26 +39,29 @@ int main() {
     }
 
     vector<vector<int>> paths_container;
+    paths_container.reserve(edge_vertex_container[0]);
 
     for (int i = 0; i < edge_vertex_container[0]; i++) {
         string path_values;
         getline(cin, path_values);
         vector<int> split_path_values = split(path_values, ' ');
         paths_container.push_back(split_path_values);
-        split_path_values.clear();
     }
 
     vector<int> symmetric;
+    symmetric.reserve(edge_vertex_container[0]);
     for (int i = 0; i < edge_vertex_container[0]; i++) {
         symmetric.push_back(0);
     }
 
     vector<int> reflexivity;
+    reflexivity.reserve(edge_vertex_container[1]);
     for (int i = 0; i < edge_vertex_container[1]; i++) {
         reflexivity.push_back(0);
     }
 
     vector<int> transitivity;
+    transitivity.reserve(edge_vertex_container[0]);
     for (int i = 0; i < edge_vertex_container[0]; i++) {
         transitivity.push_back(0);
     }
@@ -68,13 +71,13 @@ int main() {
             reflexivity.at(paths_container.at(i).at(0) - 1) = 1;
         }
         vector<int> reversed_path;
+        reversed_path.reserve(2);
         reversed_path.push_back(paths_container.at(i).at(1));
         reversed_path.push_back(paths_container.at(i).at(0));
         if (find(paths_container.begin(), paths_container.end(),
                  reversed_path) != paths_container.end()) {
             symmetric.at(i) = 1;
         }
-        reversed_path.clear();
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
             for (int j = 0; j < paths_container.size(); j++) {
                 if (i != j) {
@@ -123,7 +126,7 @@ int main() {
                                     if (transitivity.at(i) != 0 && transitivity.at(i) != -1) {
                                         transitivity.at(i) = 2;
                                         deuce_presence = true;
-                                    } else if (transitivity.at(i) != -1) {
+                                    } else {
                                         transitivity.at(i) = -1;
                                     }
                                 }
@@ -131,12 +134,11 @@ int main() {
                                     if (transitivity.at(j) != 0 && transitivity.at(j) != -1) {
                                         transitivity.at(j) = 2;
                                         deuce_presence = true;
-                                    } else if (transitivity.at(j) != -1) {
+                                    } else {
                                         transitivity.at(j) = -1;
                                     }
                                 }
                             }
-                            transitivity_path.clear();
                         } else {
                             if (transitivity.at(j) == 0) {
                                 transitivity.at(j) = 3;
@@ -160,8 +162,7 @@ int main() {
     } else if (find(transitivity.begin(), transitivity.end(), 1) == transitivity.end() &&
                find(transitivity.begin(), transitivity.end(), -1) != transitivity.end()) {
         cout << "Антитранзитивный" << endl;
-    } else if (count(transitivity.begin(), transitivity.end(), 0) == transitivity.size()
-               || count(transitivity.begin(), transitivity.end(), 3) == transitivity.size()) {
+    } else {
         cout << "Транзитивный/Антитранзитивный/Нетранзитивный" << endl;
     }
     if (find(symmetric.begin(), symmetric.end(), 0) == symmetric.end()) {
@@ -178,5 +179,7 @@ int main() {
     } else {
         cout << "Антирефлексивный" << endl;
     }
+    int end_time = clock();
+    cout << "Время выполнения: " << (end_time - start_time) / CLOCKS_PER_SEC << " сек" << endl;
     return 0;
 }
