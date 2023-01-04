@@ -28,7 +28,7 @@ int main() {
     for (int i = 0; i < 2; i++) {
         edge_vertex_container[i] = temp.at(i);
     }
-    destroy(temp.begin(), temp.end());
+    temp.clear();
     if (edge_vertex_container[0] == 0 && edge_vertex_container[1] == 0) {
         cout << "Для пустого графа выполняются все отношения" << endl;
         return 0;
@@ -44,7 +44,7 @@ int main() {
         getline(cin, path_values);
         vector<int> temp2 = split(path_values, ' ');
         paths_container.push_back(temp2);
-        destroy(temp2.begin(), temp2.end());
+        temp2.clear();
     }
 
     vector<int> symmetric;
@@ -73,7 +73,7 @@ int main() {
                  reversed_path) != paths_container.end()) {
             symmetric.at(i) = 1;
         }
-        destroy(reversed_path.begin(), reversed_path.end());
+        reversed_path.clear();
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
             for (int j = 0; j < paths_container.size(); j++) {
                 if (i != j) {
@@ -130,7 +130,7 @@ int main() {
                                     }
                                 }
                             }
-                            destroy(transitivity_path.begin(), transitivity_path.end());
+                            transitivity_path.clear();
                         } else {
                             if (transitivity.at(j) == 0) {
                                 transitivity.at(j) = 3;
