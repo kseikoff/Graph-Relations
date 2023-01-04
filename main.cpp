@@ -19,7 +19,6 @@ vector<int> split(const string& str, char delimiter) {
 }
 
 int main() {
-    int start_time = clock();
     SetConsoleOutputCP(CP_UTF8);
 
     int edge_vertex_container[2];
@@ -179,7 +178,5 @@ int main() {
     } else {
         cout << "Антирефлексивный" << endl;
     }
-    int end_time = clock();
-    cout << "Время выполнения: " << (end_time - start_time) / CLOCKS_PER_SEC << " сек" << endl;
     return 0;
 }
