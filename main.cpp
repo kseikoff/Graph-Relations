@@ -105,27 +105,8 @@ int main() {
                                         transitivity.at(i) = 1;
                                     }
                                 }
-                                if (transitivity.at(j) == -1) {
-                                    transitivity.at(j) = 2;
-                                    deuce_presence = true;
-                                } else {
-                                    if (transitivity.at(j) != 2) {
-                                        transitivity.at(j) = 1;
-                                    }
-                                }
-                                int index_of_transitivity_path = distance(paths_container.begin(), path_presence);
-                                if (transitivity.at(index_of_transitivity_path) == -1) {
-                                    transitivity.at(index_of_transitivity_path) = 2;
-                                    deuce_presence = true;
-                                } else {
-                                    if (transitivity.at(index_of_transitivity_path) != 2) {
-                                        transitivity.at(index_of_transitivity_path) = 1;
-                                    }
-                                }
-                            } else if (transitivity.at(i) != 1 && transitivity.at(j) != 1
-                                       && transitivity.at(i) != 2 && transitivity.at(j) != 2) {
+                            } else if (transitivity.at(i) != 1 && transitivity.at(i) != 2) {
                                 transitivity.at(i) = -1;
-                                transitivity.at(j) = -1;
                             } else {
                                 if (transitivity.at(i) != 2) {
                                     if (transitivity.at(i) != 0 && transitivity.at(i) != -1) {
@@ -135,18 +116,6 @@ int main() {
                                         transitivity.at(i) = -1;
                                     }
                                 }
-                                if (transitivity.at(j) != 2) {
-                                    if (transitivity.at(j) != 0 && transitivity.at(j) != -1) {
-                                        transitivity.at(j) = 2;
-                                        deuce_presence = true;
-                                    } else {
-                                        transitivity.at(j) = -1;
-                                    }
-                                }
-                            }
-                        } else {
-                            if (transitivity.at(j) == 0) {
-                                transitivity.at(j) = 3;
                             }
                         }
                     }
