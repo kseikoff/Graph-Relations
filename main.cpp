@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <windows.h>
+#include <ctime>
 
 using namespace std;
 
@@ -49,24 +50,12 @@ int main() {
     }
 
     count_zeroes_for_symmetric = edge_vertex_container[0];
-    vector<int> symmetric;
-    symmetric.reserve(edge_vertex_container[0]);
-    for (int i = 0; i < edge_vertex_container[0]; i++) {
-        symmetric.push_back(0);
-    }
+    vector<int> symmetric(edge_vertex_container[0]);
 
     count_zeroes_for_reflexivity = edge_vertex_container[1];
-    vector<int> reflexivity;
-    reflexivity.reserve(edge_vertex_container[1]);
-    for (int i = 0; i < edge_vertex_container[1]; i++) {
-        reflexivity.push_back(0);
-    }
+    vector<int> reflexivity(edge_vertex_container[1]);
 
-    vector<int> transitivity;
-    transitivity.reserve(edge_vertex_container[0]);
-    for (int i = 0; i < edge_vertex_container[0]; i++) {
-        transitivity.push_back(0);
-    }
+    vector<int> transitivity(edge_vertex_container[0]);
 
     for (int i = 0; i < paths_container.size(); i++) {
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
