@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 #include <windows.h>
-#include <ctime>
 
 using namespace std;
 
