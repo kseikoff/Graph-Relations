@@ -1,60 +1,45 @@
-#include <string>
-#include <sstream>
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <windows.h>
 
-using namespace std;
-
-vector<int> split(const string& str, char delimiter) {
-    vector<int> internal;
-    stringstream ss(str);
-    string tok;
-    while(getline(ss, tok, delimiter)) {
-        internal.push_back(stoi(tok));
-    }
-    return internal;
-}
-
 int main() {
     SetConsoleOutputCP(CP_UTF8);
 
-    int edge_vertex_container[2];
+    int* edge_vertex_container = new int [2];
+    int edges_amount; int vertex_amount;
     bool deuce_presence = false;
-    int count_zeroes_for_symmetric;
-    int count_zeroes_for_reflexivity;
+    int count_zeroes_for_symmetric; int count_zeroes_for_reflexivity;
 
-    string edge_vertex_values;
-    getline(cin, edge_vertex_values);
-    vector<int> split_edge_vertex_values = split(edge_vertex_values, ' ');
-    edge_vertex_container[0] = split_edge_vertex_values.at(0);
-    edge_vertex_container[1] = split_edge_vertex_values.at(1);
+    std::cin >> edges_amount >> vertex_amount;
+    edge_vertex_container[0] = edges_amount; edge_vertex_container[1] = vertex_amount;
     if (edge_vertex_container[0] == 0 && edge_vertex_container[1] == 0) {
-        cout << "Для пустого графа выполняются все отношения" << endl;
+        std::cout << "Для пустого графа выполняются все отношения" << std::endl;
         return 0;
     } else if (edge_vertex_container[0] == 0 && edge_vertex_container[1] != 0) {
-        cout << "Граф без ребер антирефлексивен, остальные отношения любые" << endl;
+        std::cout << "Граф без ребер антирефлексивен, остальные отношения любые" << std::endl;
         return 0;
     }
 
-    vector<vector<int>> paths_container;
+    std::vector<std::vector<int>> paths_container;
     paths_container.reserve(edge_vertex_container[0]);
 
     for (int i = 0; i < edge_vertex_container[0]; i++) {
-        string path_values;
-        getline(cin, path_values);
-        vector<int> split_path_values = split(path_values, ' ');
+        int path_from;
+        int path_to;
+        std::cin >> path_from >> path_to;
+        std::vector<int> split_path_values(2);
+        split_path_values[0] = path_from; split_path_values[1] = path_to;
         paths_container.push_back(split_path_values);
     }
 
     count_zeroes_for_symmetric = edge_vertex_container[0];
-    vector<int> symmetric(edge_vertex_container[0]);
+    std::vector<int> symmetric(edge_vertex_container[0]);
 
     count_zeroes_for_reflexivity = edge_vertex_container[1];
-    vector<int> reflexivity(edge_vertex_container[1]);
+    std::vector<int> reflexivity(edge_vertex_container[1]);
 
-    vector<int> transitivity(edge_vertex_container[0]);
+    std::vector<int> transitivity(edge_vertex_container[0]);
 
     for (int i = 0; i < paths_container.size(); i++) {
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
@@ -63,12 +48,12 @@ int main() {
                     if (paths_container.at(i).at(1) == paths_container.at(j).at(0)) {
                         if (paths_container.at(j).at(0) != paths_container.at(j).at(1)) {
                             if(paths_container.at(i).at(0) != paths_container.at(j).at(1)){
-                                vector<int> transitivity_path;
+                                std::vector<int> transitivity_path;
                                 transitivity_path.reserve(2);
                                 transitivity_path.push_back(paths_container.at(i).at(0));
                                 transitivity_path.push_back(paths_container.at(j).at(1));
-                                __gnu_cxx::__normal_iterator<vector<int> *,
-                                        vector<vector<int>>> path_presence = find(paths_container.begin(),
+                                __gnu_cxx::__normal_iterator<std::vector<int> *,
+                                        std::vector<std::vector<int>>> path_presence = find(paths_container.begin(),
                                                                                   paths_container.end(),
                                                                                   transitivity_path);
                                 if (path_presence != paths_container.end()) {
@@ -112,30 +97,30 @@ int main() {
         }
     }
     if (count_zeroes_for_symmetric == 0) {
-        cout << "Симметричный" << endl;
+        std::cout << "Симметричный" << std::endl;
     } else if (count_zeroes_for_symmetric == edge_vertex_container[0]) {
-        cout << "Антисимметричный" << endl;
+        std::cout << "Антисимметричный" << std::endl;
     } else {
-        cout << "Несимметричный" << endl;
+        std::cout << "Несимметричный" << std::endl;
     }
     if (count_zeroes_for_reflexivity == 0) {
-        cout << "Рефлексивный" << endl;
+        std::cout << "Рефлексивный" << std::endl;
     } else if (count_zeroes_for_reflexivity == edge_vertex_container[1]) {
-        cout << "Антирефлексивный" << endl;
+        std::cout << "Антирефлексивный" << std::endl;
     } else {
-        cout << "Нерефлексивный" << endl;
+        std::cout << "Нерефлексивный" << std::endl;
     }
     if (deuce_presence || ((find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) &&
          find(transitivity.begin(), transitivity.end(), -1) != transitivity.end())) {
-        cout << "Нетранзитивный" << endl;
+        std::cout << "Нетранзитивный" << std::endl;
     } else if (find(transitivity.begin(), transitivity.end(), -1) == transitivity.end() &&
                find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) {
-        cout << "Транзитивный" << endl;
+        std::cout << "Транзитивный" << std::endl;
     } else if (find(transitivity.begin(), transitivity.end(), 1) == transitivity.end() &&
                find(transitivity.begin(), transitivity.end(), -1) != transitivity.end()) {
-        cout << "Антитранзитивный" << endl;
+        std::cout << "Антитранзитивный" << std::endl;
     } else {
-        cout << "Транзитивный/Антитранзитивный/Нетранзитивный" << endl;
+        std::cout << "Транзитивный/Антитранзитивный/Нетранзитивный" << std::endl;
     }
     return 0;
 }
