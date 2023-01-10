@@ -6,40 +6,35 @@
 int main() {
     SetConsoleOutputCP(CP_UTF8);
 
-    int* edge_vertex_container = new int [2];
     int edges_amount; int vertex_amount;
     bool deuce_presence = false;
     int count_zeroes_for_symmetric; int count_zeroes_for_reflexivity;
 
     std::cin >> edges_amount >> vertex_amount;
-    edge_vertex_container[0] = edges_amount; edge_vertex_container[1] = vertex_amount;
-    if (edge_vertex_container[0] == 0 && edge_vertex_container[1] == 0) {
-        std::cout << "Для пустого графа выполняются все отношения" << std::endl;
-        return 0;
-    } else if (edge_vertex_container[0] == 0 && edge_vertex_container[1] != 0) {
-        std::cout << "Граф без ребер антирефлексивен, остальные отношения любые" << std::endl;
-        return 0;
+    if (edges_amount == 0 && vertex_amount == 0) {
+        std::cout << "Для пустого графа выполняются все отношения" << std::endl; return 0;
+    } else if (edges_amount == 0 && vertex_amount != 0) {
+        std::cout << "Граф без ребер антирефлексивен, остальные отношения любые" << std::endl; return 0;
     }
 
     std::vector<std::vector<int>> paths_container;
-    paths_container.reserve(edge_vertex_container[0]);
+    paths_container.reserve(edges_amount);
 
-    for (int i = 0; i < edge_vertex_container[0]; i++) {
-        int path_from;
-        int path_to;
+    for (int i = 0; i < edges_amount; i++) {
+        int path_from; int path_to;
         std::cin >> path_from >> path_to;
-        std::vector<int> split_path_values(2);
-        split_path_values[0] = path_from; split_path_values[1] = path_to;
-        paths_container.push_back(split_path_values);
+        std::vector<int> path_values(2);
+        path_values[0] = path_from; path_values[1] = path_to;
+        paths_container.push_back(path_values);
     }
 
-    count_zeroes_for_symmetric = edge_vertex_container[0];
-    std::vector<int> symmetric(edge_vertex_container[0]);
+    count_zeroes_for_symmetric = edges_amount;
+    std::vector<int> symmetric(edges_amount);
 
-    count_zeroes_for_reflexivity = edge_vertex_container[1];
-    std::vector<int> reflexivity(edge_vertex_container[1]);
+    count_zeroes_for_reflexivity = vertex_amount;
+    std::vector<int> reflexivity(vertex_amount);
 
-    std::vector<int> transitivity(edge_vertex_container[0]);
+    std::vector<int> transitivity(edges_amount);
 
     for (int i = 0; i < paths_container.size(); i++) {
         if (paths_container.at(i).at(0) != paths_container.at(i).at(1)) {
@@ -98,14 +93,14 @@ int main() {
     }
     if (count_zeroes_for_symmetric == 0) {
         std::cout << "Симметричный" << std::endl;
-    } else if (count_zeroes_for_symmetric == edge_vertex_container[0]) {
+    } else if (count_zeroes_for_symmetric == edges_amount) {
         std::cout << "Антисимметричный" << std::endl;
     } else {
         std::cout << "Несимметричный" << std::endl;
     }
     if (count_zeroes_for_reflexivity == 0) {
         std::cout << "Рефлексивный" << std::endl;
-    } else if (count_zeroes_for_reflexivity == edge_vertex_container[1]) {
+    } else if (count_zeroes_for_reflexivity == vertex_amount) {
         std::cout << "Антирефлексивный" << std::endl;
     } else {
         std::cout << "Нерефлексивный" << std::endl;
