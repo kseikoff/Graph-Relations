@@ -47,11 +47,8 @@ int main() {
                                 transitivity_path.reserve(2);
                                 transitivity_path.push_back(paths_container.at(i).at(0));
                                 transitivity_path.push_back(paths_container.at(j).at(1));
-                                __gnu_cxx::__normal_iterator<std::vector<int> *,
-                                        std::vector<std::vector<int>>> path_presence = find(paths_container.begin(),
-                                                                                  paths_container.end(),
-                                                                                  transitivity_path);
-                                if (path_presence != paths_container.end()) {
+                                if (find(paths_container.begin(),paths_container.end(),
+                                         transitivity_path) != paths_container.end()) {
                                     if (transitivity.at(i) == -1) {
                                         transitivity.at(i) = 2;
                                         deuce_presence = true;
