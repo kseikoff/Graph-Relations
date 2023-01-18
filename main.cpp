@@ -7,7 +7,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
 
     int edges_amount; int vertex_amount;
-    bool deuce_presence = false;
+    bool overwrite = false; bool transitive = false; bool non_transitive = false;
     int count_zeroes_for_symmetric; int count_zeroes_for_reflexivity;
 
     std::cin >> edges_amount >> vertex_amount;
@@ -17,22 +17,19 @@ int main() {
         std::cout << "Граф без ребер антирефлексивен, остальные отношения любые" << std::endl; return 0;
     }
 
-    std::vector<std::vector<int>> paths_container;
-    paths_container.reserve(edges_amount);
+    std::vector<std::vector<int>> paths_container(edges_amount);
 
     for (int i = 0; i < edges_amount; i++) {
         int path_from; int path_to;
         std::cin >> path_from >> path_to;
         std::vector<int> path_values(2);
         path_values[0] = path_from; path_values[1] = path_to;
-        paths_container.push_back(path_values);
+        paths_container[i] = path_values;
     }
 
     count_zeroes_for_symmetric = edges_amount;
-    std::vector<int> symmetric(edges_amount);
 
     count_zeroes_for_reflexivity = vertex_amount;
-    std::vector<int> reflexivity(vertex_amount);
 
     std::vector<int> transitivity(edges_amount);
 
@@ -43,35 +40,30 @@ int main() {
                     if (paths_container.at(i).at(1) == paths_container.at(j).at(0)) {
                         if (paths_container.at(j).at(0) != paths_container.at(j).at(1)) {
                             if(paths_container.at(i).at(0) != paths_container.at(j).at(1)){
-                                std::vector<int> transitivity_path;
-                                transitivity_path.reserve(2);
-                                transitivity_path.push_back(paths_container.at(i).at(0));
-                                transitivity_path.push_back(paths_container.at(j).at(1));
+                                std::vector<int> transitivity_path(2);
+                                transitivity_path[0] = paths_container.at(i).at(0);
+                                transitivity_path[1] = paths_container.at(j).at(1);
                                 if (find(paths_container.begin(),paths_container.end(),
                                          transitivity_path) != paths_container.end()) {
                                     if (transitivity.at(i) == -1) {
                                         transitivity.at(i) = 2;
-                                        deuce_presence = true;
-                                    } else {
-                                        if (transitivity.at(i) != 2) {
+                                        overwrite = true;
+                                    } else if (transitivity.at(i) != 2) {
                                             transitivity.at(i) = 1;
-                                        }
+                                            transitive = true;
                                     }
-                                } else if (transitivity.at(i) != 1 && transitivity.at(i) != 2) {
-                                    transitivity.at(i) = -1;
                                 } else {
-                                    if (transitivity.at(i) != 2) {
-                                        if (transitivity.at(i) != 0 && transitivity.at(i) != -1) {
-                                            transitivity.at(i) = 2;
-                                            deuce_presence = true;
-                                        } else {
-                                            transitivity.at(i) = -1;
-                                        }
+                                    if (transitivity.at(i) != 1 && transitivity.at(i) != 2) {
+                                        transitivity.at(i) = -1;
+                                        non_transitive = true;
+                                    }
+                                    else {
+                                        transitivity.at(i) = 2;
+                                        overwrite = true;
                                     }
                                 }
                             }
                             else{
-                                symmetric.at(i) = 1;
                                 count_zeroes_for_symmetric -= 1;
                             }
                         }
@@ -79,9 +71,7 @@ int main() {
                 }
             }
         } else {
-            symmetric.at(i) = 1;
             count_zeroes_for_symmetric -= 1;
-            reflexivity.at(paths_container.at(i).at(0) - 1) = 1;
             count_zeroes_for_reflexivity -= 1;
             if (transitivity.at(i) == 0) {
                 transitivity.at(i) = 3;
@@ -102,14 +92,11 @@ int main() {
     } else {
         std::cout << "Нерефлексивный" << std::endl;
     }
-    if (deuce_presence || ((find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) &&
-         find(transitivity.begin(), transitivity.end(), -1) != transitivity.end())) {
+    if (overwrite || (transitive && non_transitive)) {
         std::cout << "Нетранзитивный" << std::endl;
-    } else if (find(transitivity.begin(), transitivity.end(), -1) == transitivity.end() &&
-               find(transitivity.begin(), transitivity.end(), 1) != transitivity.end()) {
+    } else if (!non_transitive && transitive) {
         std::cout << "Транзитивный" << std::endl;
-    } else if (find(transitivity.begin(), transitivity.end(), 1) == transitivity.end() &&
-               find(transitivity.begin(), transitivity.end(), -1) != transitivity.end()) {
+    } else if (non_transitive) {
         std::cout << "Антитранзитивный" << std::endl;
     } else {
         std::cout << "Транзитивный/Антитранзитивный/Нетранзитивный" << std::endl;
